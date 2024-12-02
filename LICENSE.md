@@ -1,2 +1,2 @@
 
-Copyright (C) 2024 
+Copyright (C) Wolkenhof GmbH 2024 
