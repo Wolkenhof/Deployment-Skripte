@@ -2,7 +2,8 @@
 ############################## Wolkenhof ##############################
 Purpose : SwyxIt! Client Installation
 Created : 07.07.2025
-Version : 1.0
+Updated : 10.07.2025
+Version : 1.1
 Source  : https://github.com/Wolkenhof/Deployment-Skripte
 Author  : jgu
 Company : Wolkenhof GmbH
@@ -11,10 +12,12 @@ Company : Wolkenhof GmbH
 
 <# Settings #>
 
-$swyxVersion = '14.21.0.0'      # SwyxIt! Client Version
-$serverIP = '10.10.1.103'       # SwyxIt! Server IP address
-$pbxUser = ''                   # optional; leave blank if not needed 
-$useTrustedAuthentication = 0   # Set this to 1 if using Windows Authentification
+$swyxVersion = '14.21.0.0'                          # SwyxIt! Client Version
+$serverIP = '10.10.1.103'                           # SwyxIt! Server IP address
+#$pbxUser = ''                                       # optional; leave blank if not needed 
+$useTrustedAuthentication = 0                       # Set this to 1 if using Windows Authentification
+$remoteConnectorAuth = 'tel.wolkenhof.com:9101'     # Remote Connection Authentification (PublicAuthServerName)
+$remoteConnectorServer = 'tel.wolkenhof.com:16203'  # Remote Connection Server (PublicAuthServerName)
 
 # !! Advanced Settings - Change only if you know what you're doing !!
 $zipFileUrl = "https://downloads.enreach.de/download/swyxit!_${swyxVersion}_64bit_german.zip"
@@ -100,8 +103,8 @@ function Install-SwyxItAndSetRegistry {
         return
     }
 
-    $regPath = "HKCU:\SOFTWARE\Swyx\SwyxIt!\CurrentVersion\Options"
-    Write-Host "Setting Registry Keys under '$regPath'..."
+     $regPath = "HKCU:\SOFTWARE\Swyx\SwyxIt!\CurrentVersion\Options"
+     Write-Host "Setting Registry Keys under '$regPath'..."
 
     try {
         if (-not (Test-Path $regPath)) {
@@ -110,8 +113,10 @@ function Install-SwyxItAndSetRegistry {
         }
 
         Set-ItemProperty -Path $regPath -Name "PbxServer" -Value $serverIP -Force
-        Set-ItemProperty -Path $regPath -Name "PbxUser" -Value $pbxUser -Force
+        #Set-ItemProperty -Path $regPath -Name "PbxUser" -Value $pbxUser -Force
         Set-ItemProperty -Path $regPath -Name "TrustedAuthentication" -Value $useTrustedAuthentication -Type DWord -Force
+        Set-ItemProperty -Path $regPath -Name "PublicAuthServerName" -Value $remoteConnectorAuth -Type String -Force
+        Set-ItemProperty -Path $regPath -Name "PublicServerName" -Value $remoteConnectorServer -Type String -Force
 
         Write-Host "Registry keys set successfully."
     } catch {
