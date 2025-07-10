@@ -16,8 +16,8 @@ $swyxVersion = '14.21.0.0'                          # SwyxIt! Client Version
 $serverIP = '10.10.1.103'                           # SwyxIt! Server IP address
 #$pbxUser = ''                                       # optional; leave blank if not needed 
 $useTrustedAuthentication = 0                       # Set this to 1 if using Windows Authentification
-$remoteConnectorAuth = 'tel.wolkenhof.com:9101'     # Remote Connection Authentification (PublicAuthServerName)
-$remoteConnectorServer = 'tel.wolkenhof.com:16203'  # Remote Connection Server (PublicAuthServerName)
+$remoteConnectorAuth = 'swyx.example.com:9101'     # Remote Connection Authentification (PublicAuthServerName)
+$remoteConnectorServer = 'swyx.example.com:16203'  # Remote Connection Server (PublicAuthServerName)
 
 # !! Advanced Settings - Change only if you know what you're doing !!
 $zipFileUrl = "https://downloads.enreach.de/download/swyxit!_${swyxVersion}_64bit_german.zip"
