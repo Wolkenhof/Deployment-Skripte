@@ -1,7 +1,8 @@
-﻿<#
+<#
 ############################## Wolkenhof ##############################
 Purpose : FSLogix User Disk Prüfer für Server-Eye
 Created : 27.11.2024
+Updated : 10.07.2025
 Source  : https://github.com/Wolkenhof/Deployment-Skripte
 Author  : jgu
 Company : Wolkenhof GmbH
@@ -16,8 +17,8 @@ Param
     [double]$minGB
 )
 
-Write-Host "FSLogix User Disk Pruefer [Version 2.1]"
-Write-Host "Copyright (c) 2024 Wolkenhof GmbH"
+Write-Host "FSLogix User Disk Pruefer [Version 2.2]"
+Write-Host "Copyright (c) 2025 Wolkenhof GmbH"
 Write-Host ""
 Write-Host "Hinweis: Zum Anpassen des Schwellenwertes, gehe zu 'Sensor-Einstellungen -> Argumente'"
 Write-Host "Hinweis: und gebe den gewuenschten Wert ein."
@@ -91,7 +92,7 @@ else
         continue
     }
     
-    $profilePath = $fslogixRegValue.ProfilePath
+    $profilePath = $fslogixRegValue.UserProfilePath
     $volumeSize = $volume.Size / 1GB
     $sizeRemaining = $volume.SizeRemaining / 1GB
     $usedSize = $volumeSize - $sizeRemaining
