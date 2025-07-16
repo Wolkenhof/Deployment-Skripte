@@ -2,8 +2,8 @@
 ############################## Wolkenhof ##############################
 Purpose : SwyxIt! Client Installation
 Created : 07.07.2025
-Updated : 10.07.2025
-Version : 1.1
+Updated : 16.07.2025
+Version : 1.2
 Source  : https://github.com/Wolkenhof/Deployment-Skripte
 Author  : jgu
 Company : Wolkenhof GmbH
@@ -12,12 +12,15 @@ Company : Wolkenhof GmbH
 
 <# Settings #>
 
-$swyxVersion = '14.21.0.0'                          # SwyxIt! Client Version
-$serverIP = '10.10.1.103'                           # SwyxIt! Server IP address
-#$pbxUser = ''                                       # optional; leave blank if not needed 
-$useTrustedAuthentication = 0                       # Set this to 1 if using Windows Authentification
+$swyxVersion = '14.21.0.0'                         # SwyxIt! Client Version
+$serverIP = '172.50.0.22'                          # SwyxIt! Server IP address
+#$pbxUser = ''                                     # Username (disabled, uncomment here and line 120 to enable it)
+$useTrustedAuthentication = 0                      # Windows Authentification: 0 = Off, 1 = On
 $remoteConnectorAuth = 'swyx.example.com:9101'     # Remote Connection Authentification (PublicAuthServerName)
 $remoteConnectorServer = 'swyx.example.com:16203'  # Remote Connection Server (PublicAuthServerName)
+
+# Feature List (see https://help.enreach.com/cpe/14.00/Client/Swyx/de-DE/index.html#page/help/chap_installation.22.10.html)
+$features = 'PhoneClient,CLMgrTSP,DesktopShortcut,StartupShortcut,SwyxMeeting,ScriptEditor,Outlook2007Support,MsTeamsIntegration,Video'
 
 # !! Advanced Settings - Change only if you know what you're doing !!
 $zipFileUrl = "https://downloads.enreach.de/download/swyxit!_${swyxVersion}_64bit_german.zip"
@@ -86,8 +89,9 @@ function Install-SwyxItAndSetRegistry {
 
     if (Test-Path $msiPath) {
         Write-Host "Starting MSI installation for '$msiPath'..."
+        Write-Host "Installing Features: $features"
         try {
-            $process = Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$msiPath`" /qn /norestart" -Wait -PassThru
+            $process = Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$msiPath`" ADDLOCAL=`"$features`" /qn /norestart" -Wait -PassThru
             if ($process.ExitCode -eq 0) {
                 Write-Host "MSI installation completed successfully."
             } else {
@@ -103,8 +107,8 @@ function Install-SwyxItAndSetRegistry {
         return
     }
 
-     $regPath = "HKCU:\SOFTWARE\Swyx\SwyxIt!\CurrentVersion\Options"
-     Write-Host "Setting Registry Keys under '$regPath'..."
+    $regPath = "HKCU:\SOFTWARE\Swyx\SwyxIt!\CurrentVersion\Options"
+    Write-Host "Setting Registry Keys under '$regPath'..."
 
     try {
         if (-not (Test-Path $regPath)) {
